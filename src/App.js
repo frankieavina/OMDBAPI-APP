@@ -1,27 +1,50 @@
 import './App.css';
+import { useState, useEffect } from 'react';
 import { getMovieDetailsById, getMoviesBySearchTerm } from './utils'; 
+import MovieCard from './components/MovieCard';
+import MovieDetails from './components/MovieDetails';
 
-function App() {
+function App() { 
 
-  let getMovies = ()=> {
+  const [movie, setMovie] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(''); 
 
+  useEffect(() => {
+
+    setIsLoading(true);
     getMovieDetailsById("tt3896198")
-      .then((results) => results.json())
-      .then((data) => console.log(data));
+    .then((movie) => {
+      console.log(movie);
+      setMovie(movie);  
+    }); 
 
-    getMoviesBySearchTerm("Star Wars")
-      .then((results) => results.json())
-      .then((data) => console.log(data));
+  }, []);
 
-
-  }
 
   return (
     <div className="App">
 
-          <h3>Learn React</h3>
-          <button onClick={getMovies()}>Console log Move by ID and Movie By Term</button> 
-          
+      <h3>Learn React</h3>
+
+      {movie ? (<MovieCard
+            title={movie.Title}
+            type={movie.Type}
+            posterUrl={movie.Poster}
+        />
+        ) : (
+            <div>Loading...</div>
+        )}
+
+      <MovieDetails 
+        rated={movie.rated}
+        runtime= {movie.Runtime}
+        genre= {movie.Genre}
+        plot= {movie.Plot}
+        actors= {movie.Actors}
+        rating= {movie.Rating}
+      />
+
     </div>
   );
 }
