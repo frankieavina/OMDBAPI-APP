@@ -1,5 +1,6 @@
-import React from 'react'
-import MovieDetails from './MovieDetails'
+import React from 'react';
+import MovieDetails from './MovieDetails';
+import { Badge, Card, Button} from 'react-bootstrap';
 
 function MovieCard({
     title, 
@@ -8,16 +9,18 @@ function MovieCard({
     }) { 
 
     return (
-     <div className="moviecard">
-        <img
-          className="moviecard__poster"
-          src={posterUrl}
-          alt={`${title} poster`}
-        />
-        <footer className="moviecard__footer">
-          <h3 className="moviecard__title">{title}</h3>
-          <span className="moviecard__type">Type: {type}</span>
-        </footer>
+     <div className="moviecard" style={{padding:'10px'}}>
+        <Card style={{ width: '20rem' }}>
+            <Card.Img variant="top" src={posterUrl} />
+            <Card.Body>
+                <Card.Title>{title}</Card.Title>
+                <Card.Text>
+                    Type: 
+                    <Badge bg="primary">{type}</Badge>
+                </Card.Text>
+                <Button variant="info">Movie Details</Button>
+            </Card.Body>
+        </Card>
 
       </div>
     )
