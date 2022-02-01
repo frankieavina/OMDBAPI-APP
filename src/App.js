@@ -3,10 +3,7 @@ import { useState, useEffect } from 'react';
 import { getMovieDetailsById, getMoviesBySearchTerm } from './utils'; 
 import MovieCard from './components/MovieCard';
 import MovieDetails from './components/MovieDetails';
-import { Nav, Navbar, Button, FormControl, Form, NavDropdown, Container } from 'react-bootstrap';
-
-import Modal from 'react-modal';
-Modal.setAppElement("#root");
+import { Nav, Navbar, Button, FormControl, Form, NavDropdown, Container, Row } from 'react-bootstrap';
 
 function App() { 
 
@@ -15,21 +12,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); 
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  function toggleModal() {
-    setIsOpen(!isOpen);
-  }
-
   useEffect(() => {
 
-    setIsLoading(true);
-    // getMoviesBySearchTerm('Batman')
-    getMovieDetailsById("tt3896198")
+   setIsLoading(true);
+   getMoviesBySearchTerm('Batman')
     .then((movies) => {
-      console.log(movies);
-      setMovie(movies)
-      // setMovieList(movies.Search);  
+      console.log("This is the movies",movies.Search);
+      setMovieList(movies.Search);  
     }); 
 
   }, []);
@@ -52,14 +41,7 @@ function App() {
               <NavDropdown title="Link" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#" disabled>
-                Link
-              </Nav.Link>
             </Nav>
             <Form className="d-flex">
               <FormControl
@@ -73,48 +55,24 @@ function App() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+        
+          <div className="CardsBody">
+              {movieList.map((movie) => (
+                <MovieCard
+                    title={movie.Title}
+                    type={movie.Type}
+                    posterUrl={movie.Poster}
+                    rated={movie.rated}
+                    runtime= {movie.Runtime}
+                    genre= {movie.Genre}
+                    plot= {movie.Plot}
+                    actors= {movie.Actors}
+                    rating= {movie.Rating}
+                />
+              ))} 
+          </div>
+ 
 
-      <hr/>
-
-      <div onClick={toggleModal}>
-        {movie ? (<MovieCard
-            title={movie.Title}
-            type={movie.Type}
-            posterUrl={movie.Poster}
-        />
-        ) : (
-            <div>Loading...</div>
-        )}
-      </div>
-      
-
-        <hr/>
-       
-      < Modal isOpen={isOpen} onRequestClose={toggleModal} contentLabel="My dialog" >
-        <MovieDetails 
-          title={movie.Title}
-          rated={movie.rated}
-          runtime= {movie.Runtime}
-          genre= {movie.Genre}
-          plot= {movie.Plot}
-          actors= {movie.Actors}
-          rating= {movie.Rating}
-        /> 
-        <button onClick={toggleModal}>Close Modal</button>
-      </Modal>
-
-          <hr/>
-
-        {/* <div className="movielist">
-        {movieList.map((movie) => (
-          <MovieCard
-            key={movie.imdbID}
-            title={movie.Title}
-            type={movie.Type}
-            posterUrl={movie.Poster}
-          />
-        ))}
-      </div> */}
       
 
     </div>
