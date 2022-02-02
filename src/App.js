@@ -11,17 +11,31 @@ function App() {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); 
+  const [ searchInput, setSearchInput] = useState('batman');
 
+  console.log("Search Input:",searchInput);
+
+  // useEffect 
   useEffect(() => {
-
    setIsLoading(true);
-   getMoviesBySearchTerm('Batman')
+   // if empty
+   if(searchInput == null )
+   {
+     setSearchInput('batman');
+   }
+   getMoviesBySearchTerm(searchInput)
     .then((movies) => {
       console.log("This is the movies",movies.Search);
       setMovieList(movies.Search);  
     }); 
 
-  }, []);
+  }, [searchInput]);
+
+  // button click handler function 
+  function clickHandler(){
+    console.log('clicked button:',searchTerm)
+    setSearchInput(searchTerm);
+  }
 
 
   return (
@@ -29,7 +43,7 @@ function App() {
 
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">Movie App</Navbar.Brand>
+          <Navbar.Brand href="#">OMBD App</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -38,10 +52,10 @@ function App() {
               navbarScroll
             >
               <Nav.Link href="#action1">Home</Nav.Link>
-              <NavDropdown title="Link" id="navbarScrollingDropdown">
+              {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-              </NavDropdown>
+              </NavDropdown> */}
             </Nav>
             <Form className="d-flex">
               <FormControl
@@ -49,8 +63,10 @@ function App() {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                value={searchTerm}
+                onChange={(event) =>{ setSearchTerm(event.target.value)} }
               />
-              <Button variant="outline-success">Search</Button>
+              <Button variant="outline-success" onClick={() => clickHandler() }>Search</Button>
             </Form>
           </Navbar.Collapse>
         </Container>
